@@ -62,7 +62,7 @@ def solution(river, n, m, k):
     i = -1
     next_log = 0
     while i < n-1:                                      
-        if m >= logs[next_log] - i:                     # if you can jup over log
+        if m >= logs[next_log] - i:                     # if you can jump over log
             i = logs[next_log]
         else:
             i += m
