@@ -1,6 +1,6 @@
 # Active User Retention: Facebook
 
-**Question link:** [Active User Retention: Facebook](Active User Retention)
+**Question link:** [Active User Retention: Facebook](https://datalemur.com/questions/user-retention)
 
 credits: Datalemur
 
