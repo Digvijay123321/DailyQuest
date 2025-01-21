@@ -52,20 +52,16 @@ jobs:
           echo "" >> daily_report.log
           echo "End of report." >> daily_report.log
 
-      # Step 3: Configure Git
-      - name: Configure Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-      # Step 4: Pull and rebase the latest changes
+      # Step 3: Pull and rebase the latest changes
       - name: Pull and rebase latest changes
         run: |
           git pull origin main --rebase
 
-      # Step 5: Commit and push the report
+      # Step 4: Commit and push the report
       - name: Commit and push report
         run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
           git add daily_report.log
           git commit -m "Daily report for $TODAY" || echo "No changes to commit"
           git push origin main
