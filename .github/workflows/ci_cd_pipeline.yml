@@ -3,7 +3,7 @@ name: Daily Report Generation
 on:
   schedule:
     # Runs every day at 13:05 EST (18:05 UTC)
-    - cron: "15 18 * * *"
+    - cron: "5 18 * * *"
 
 jobs:
   generate-report:
@@ -50,16 +50,21 @@ jobs:
           echo "" >> daily_report.log
           echo "End of report." >> daily_report.log
 
-      # Step 3: Pull the latest changes from the remote repository
-      - name: Pull latest changes
+      # Step 3: Configure Git
+      - name: Configure Git
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git pull origin main
 
-      # Step 4: Commit and push the report
+      # Step 4: Pull and rebase the latest changes
+      - name: Pull and rebase
+        run: |
+          git fetch origin main
+          git rebase origin/main
+
+      # Step 5: Commit and push the report
       - name: Commit and push report
         run: |
           git add daily_report.log
           git commit -m "Daily report for $TODAY" || echo "No changes to commit"
-          git push origin main || echo "Push failed, no changes made"
+          git push origin main
