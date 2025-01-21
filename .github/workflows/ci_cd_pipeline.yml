@@ -3,7 +3,7 @@ name: Daily Report Generation
 on:
   schedule:
     # Runs every day at midnight (05:00 UTC == 00:00 EST)
-    - cron: "0 5 * * *"
+    - cron: "5 18 * * *"
 
 jobs:
   generate-report:
