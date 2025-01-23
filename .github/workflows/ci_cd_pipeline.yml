@@ -20,6 +20,13 @@ jobs:
       - name: Generate daily report
         id: report
         run: |
+
+          REPORT_DIR=".github/reports"
+
+          mkdir -p $REPORT_DIR
+
+          REPORT_FILE="$REPORT_DIR/daily_report.log"
+          
           # Get the current date in YYYY-MM-DD format
           TODAY=$(date -u +"%Y-%m-%d")
 
@@ -27,30 +34,30 @@ jobs:
           COMMITS=$(git log --since="$TODAY 00:00:00" --until="$TODAY 23:59:59" --pretty=format:"%h - %s")
           
           # Initialize report content
-          echo "Daily Report for $TODAY" > daily_report.log
-          echo "==========================" >> daily_report.log
+          echo "Daily Report for $TODAY" > REPORT_FILE
+          echo "==========================" >> REPORT_FILE
 
           # Check if there were any commits
           if [ -z "$COMMITS" ]; then
-            echo "No new files were added today." >> daily_report.log
+            echo "No new files were added today." >> REPORT_FILE
           else
-            echo "Commits:" >> daily_report.log
-            echo "$COMMITS" >> daily_report.log
-            echo "" >> daily_report.log
+            echo "Commits:" >> REPORT_FILE
+            echo "$COMMITS" >> REPORT_FILE
+            echo "" >> REPORT_FILE
           
             # Get the list of files added in today's commits
             FILES=$(git log --since="$TODAY 00:00:00" --until="$TODAY 23:59:59" --name-status --pretty=format: | grep '^A' | awk '{print $2}')
             
             if [ -n "$FILES" ]; then
-              echo "Files added today:" >> daily_report.log
-              echo "$FILES" | sort | uniq >> daily_report.log
+              echo "Files added today:" >> REPORT_FILE
+              echo "$FILES" | sort | uniq >> REPORT_FILE
             else
-              echo "No new files were added today." >> daily_report.log
+              echo "No new files were added today." >> REPORT_FILE
             fi
           fi
           
-          echo "" >> daily_report.log
-          echo "End of report." >> daily_report.log
+          echo "" >> REPORT_FILE
+          echo "End of report." >> REPORT_FILE
 
       # Step 3: Configure Git
       - name: Configure Git
@@ -66,6 +73,6 @@ jobs:
       # Step 5: Commit and push the report
       - name: Commit and push report
         run: |
-          git add daily_report.log
+          git add .github/reports/daily_report.log
           git commit -m "Daily report for $TODAY" || echo "No changes to commit"
           git push origin main
