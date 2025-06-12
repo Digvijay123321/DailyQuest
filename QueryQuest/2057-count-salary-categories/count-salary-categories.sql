@@ -1,23 +1,21 @@
 # Write your MySQL query statement below
-with low_salary as (
-    select count(*) as count
-    from accounts
-    where income < 20000
-), average_salary as (
-    select count(*) as count
-    from accounts
-    where income between 20000 and 50000
-), high_salary as (
-    select count(*) as count
-    from accounts
-    where income > 50000
-)
-
-select "High Salary" as category, count as accounts_count
-from high_salary
-union all
-select "Low Salary" as category, count
-from low_salary
-union all
-select "Average Salary" as category, count
-from average_salary
+select c.category,
+  ifnull(a.accounts_count, 0) as accounts_count
+from (
+  select 'Low Salary' as category
+  union all
+  select 'Average Salary'
+  union all
+  select 'High Salary'
+) as c
+left join (
+  select 
+    case 
+      when income < 20000 then 'Low Salary'
+      when income <= 50000 then 'Average Salary'
+      else 'High Salary'
+    end as category,
+    count(*) as accounts_count
+  from accounts
+  group by category
+) as a on c.category = a.category
