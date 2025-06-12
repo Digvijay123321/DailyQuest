@@ -18,6 +18,3 @@ with name as (
 select name as results from name
 union all
 select title from movie
-
-
-
