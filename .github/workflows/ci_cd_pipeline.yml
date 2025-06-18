@@ -1,9 +1,9 @@
 name: Daily Report Generation
 
 on:
-  workflow_dispatch:  # allow manual run
+  workflow_dispatch:
   schedule:
-    - cron: "5 18 * * *"  # daily at 18:05 UTC
+    - cron: "0 4 * * *" 
 
 jobs:
   generate-report:
