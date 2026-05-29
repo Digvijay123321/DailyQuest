@@ -7,6 +7,6 @@ class Solution:
         for i in t:
             if i == s_list[j]:
                 j += 1
-                if len(s_list) == j:
-                    return True
+            if len(s_list) == j:
+                return True
         return False
